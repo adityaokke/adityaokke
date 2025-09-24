@@ -16,8 +16,8 @@ jobs:
       id-token: write    # needed for WIF
       contents: read
     env:
-      BUCKET: ${{ env.GCS_BUCKET_NAME }}
-      REGION: ${{ env.GCS_BUCKET_REGION }}
+      BUCKET: ${{ vars.GCS_BUCKET_NAME }}
+      REGION: ${{ vars.GCS_BUCKET_REGION }}
     steps:
       - id: 'checkout'
         uses: 'actions/checkout@v4'
