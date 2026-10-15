@@ -39,7 +39,7 @@ export default function Contact() {
             <LuMapPin className="text-emerald-400" size={24} />
             <div className="text-left">
               <p className="text-xs text-slate-500 uppercase tracking-wider">Location</p>
-              <p className="text-slate-300 font-medium">Bandung / Tangerang, Indonesia</p>
+              <p className="text-slate-300 font-medium">Tangerang, Indonesia</p>
             </div>
           </div>
         </div>
