@@ -35,14 +35,16 @@ export default function Projects() {
                   <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors" aria-label="GitHub Repository">
                     <FaGithub size={20} />
                   </a>
-                  <a href={project.live} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors" aria-label="Live Website">
-                    <LuExternalLink size={20} />
-                  </a>
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors" aria-label="Live Website">
+                      <LuExternalLink size={20} />
+                    </a>
+                  )}
                 </div>
               </div>
-              
+
               <h3 className="text-xl font-bold text-slate-200 mb-3 group-hover:text-emerald-400 transition-colors">
-                <a href={project.live} target="_blank" rel="noopener noreferrer">{project.title}</a>
+                <a href={project.live ?? project.github} target="_blank" rel="noopener noreferrer">{project.title}</a>
               </h3>
               <p className="text-slate-400 text-sm mb-6 flex-grow leading-relaxed">
                 {project.description}
