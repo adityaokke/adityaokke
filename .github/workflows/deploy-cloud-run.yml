@@ -1,0 +1,59 @@
+# Build the Docker image and deploy it to Cloud Run
+name: Deploy to Cloud Run
+
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Only one deploy at a time; a newer push cancels an older running deploy
+concurrency:
+  group: deploy-cloud-run
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write    # needed for WIF
+      contents: read
+    env:
+      REGION: asia-southeast1
+      SERVICE: adityaokkecloudrunservice
+      IMAGE: asia-southeast1-docker.pkg.dev/adityaokke/adityaokkerepo/adityaokke
+    steps:
+      - id: 'checkout'
+        uses: 'actions/checkout@v4'
+
+      # Authenticate to GCP (WIF)
+      - id: 'auth'
+        name: Auth to Google Cloud (WIF)
+        uses: 'google-github-actions/auth@v3'
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+      - id: 'setup-gcloud'
+        uses: 'google-github-actions/setup-gcloud@v3'
+
+      # Build with the Dockerfile and push tagged with the commit SHA and latest
+      - id: 'build-push'
+        name: Build and push image
+        run: |
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          docker build -t "${IMAGE}:${GITHUB_SHA}" -t "${IMAGE}:latest" .
+          docker push --all-tags "${IMAGE}"
+
+      - id: 'deploy'
+        name: Deploy to Cloud Run
+        uses: 'google-github-actions/deploy-cloudrun@v3'
+        with:
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: ${{ env.IMAGE }}:${{ github.sha }}
+
+      - name: Show URL
+        run: echo "Deployed to ${{ steps.deploy.outputs.url }}"
