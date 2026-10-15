@@ -7,8 +7,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "docker:build": "docker build -t asia-southeast2-docker.pkg.dev/adityaokke/adityaokke/adityaokke:latest .",
-    "docker:push": "docker push asia-southeast2-docker.pkg.dev/adityaokke/adityaokke/adityaokke:latest"
+    "docker:build": "docker build -t asia-southeast1-docker.pkg.dev/adityaokke/adityaokkerepo/adityaokke:latest .",
+    "docker:push": "docker push asia-southeast1-docker.pkg.dev/adityaokke/adityaokkerepo/adityaokke:latest"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.5",
